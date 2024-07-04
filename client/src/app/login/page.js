@@ -36,9 +36,11 @@ if(response.status == '200'){
   toast.success(data.msg)
  dispatch(setLogInDetails(data))
   if (data.user.role=='Rider'){
-    router.push('/publishride')
-  }else{
-    router.push('/searchride')
+    router.push('/rider-homepage')
+  }else if (data.user.role =='User'){
+    router.push('/user-homepage')
+  }else {
+    router.push('/admin-homepage')
   }
 }else{
   toast.error(data.msg)
