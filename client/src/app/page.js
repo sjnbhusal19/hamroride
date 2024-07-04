@@ -5,7 +5,7 @@ import {Button} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {DatePicker} from "@nextui-org/react";
 import Bottom from '@/component/about/page';
-import CustumNavbar from '@/component/navbar/page';
+import CustomNavbar from '@/component/navbar/page';
 
 
 
@@ -22,7 +22,7 @@ const Home = () => {
   return (
      
     <div >
-      <CustumNavbar/>
+      <CustomNavbar/>
 
     <div >
       <Image 

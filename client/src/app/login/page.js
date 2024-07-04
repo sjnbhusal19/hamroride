@@ -5,11 +5,13 @@ import Link from "next/link";
 import CustumNavbar from '@/component/navbar/page';
 import { useFormik} from 'formik';
 import toast from 'react-hot-toast';
+import { setLogInDetails } from '@/redux/reducerSlices/userSlice';
 import { useRouter } from 'next/navigation';
-
+import { useDispatch } from 'react-redux';
 
 const login = () => {
-  const router = useRouter()
+const router = useRouter();
+const dispatch = useDispatch();
   const formikLogin = useFormik({
     initialValues: {
       email: '',
@@ -32,10 +34,11 @@ const login = () => {
  
 if(response.status == '200'){
   toast.success(data.msg)
-  if (response.user.role=='Rider'){
+ dispatch(setLogInDetails(data))
+  if (data.user.role=='Rider'){
     router.push('/publishride')
   }else{
-    router.push('/searchrides')
+    router.push('/searchride')
   }
 }else{
   toast.error(data.msg)

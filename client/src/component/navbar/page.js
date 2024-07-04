@@ -2,47 +2,75 @@
 import React from 'react'
 import { FaSearch } from "react-icons/fa";
 import { CgAdd } from "react-icons/cg";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaCircleUser,FaCircleArrowDown,FaLocationCrosshairs  } from "react-icons/fa6";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-import { FaCircleArrowDown } from "react-icons/fa6";
 import HamroRideLogo from '../logo/page';
 import Link from 'next/link';
+import { RiHistoryFill } from "react-icons/ri";
+import navBarItems from '@/config/navBarItems.json'
+import { useRouter } from 'next/navigation';
+//import { useSelector } from 'react-redux';
 
 
 
 
 const CustumNavbar = () => {
+ // const {userDetails} = useSelector(state=>state.user)
+const router = useRouter();
+
+const handleNavigation = (path) => {
+  router.push(path)
+}
   return (
-     <div className=' flex items-center justify-between m-4'>
+     <div className=' flex items-center justify-between m-2'>
      <div >
      <HamroRideLogo/>
     </div>
     <div className='flex'>
-    <div className='flex p-2 space-x-4'> 
-    <Link href="/searchride">
-    <div className='text-blue-600 flex'>
-      <div className='mr-1 mt-1'>
-        <FaSearch className='text-xl' />
-        </div>
-      <div className='mr-1'>Search Ride
+    <div className='flex p-2 space-x-2'> 
+    {
+    navBarItems['User'].map((item) => {
+      return(
+     <div key={item.Link} className='text-blue-600 flex m-2 p-1 space-x-2' onClick={() => handleNavigation(item.Link)}>
+    {(() => {
+        if (item.name=='Search Ride') {
+          return (
+            <div className='flex'>
+               <FaSearch className='text-xl mr-1 mt-1' />
+               {item.name}
+            </div>
+          )
+        } else if (item.name =='Ride History') {
+          return (
+            <div className='flex '>
+              <RiHistoryFill className='text-xl mr-1 mt-1'/>
+              {item.name}
+            </div>
+          )
+        } else if (item.name == 'Present Location'){
+          return (
+            <div className='flex'>
+            <FaLocationCrosshairs className='text-xl mr-1 mt-1' />  
+            {item.name}
+            </div>
+          )
+        } else if (item.name == 'Publish Ride'){
+          return(
+            <div className='flex '>
+               <CgAdd className='text-xl mr-1 mt-1' />
+               {item.name}
+              </div>
+          )
+        }
+      })()}
+
       </div>
-      </div>
-      </Link>
-    
-      <Link href="/publishride">
-    <div className='text-blue-600 flex'>
-      <div className=' mr-1 mt-1 ml-2 '>
-        <CgAdd className='text-xl' />
-        </div>
-      <div className=''>Publish A Ride
-      </div>
-      </div>
-      </Link>
-      </div>
-     
-     
-      <div>
-      <div className='text-blue-600'>
+    )
+  })
+  }
+   </div>
+
+      <div className='text-blue-600 m-2 p-1'>
       <Dropdown>
       <DropdownTrigger>
         <Button className='text-blue-600 '>
@@ -61,8 +89,7 @@ const CustumNavbar = () => {
       
       </div>
       </div>
-    </div>
-    </div>
+      </div>
   )
 }
 

@@ -1,0 +1,18 @@
+{
+    "Admin":[
+        {"id":1,"name":"Verify KYC","Link":"/veryfyKyc"},
+        {"id":2,"name":"Remove Ride","Link":"/removeRide"},
+        {"id":2,"name":"Ride History","Link":"/rideHistory"},
+        {"id":2,"name":"Present Location","Link":"/presentLocation"}
+    ],
+    "Rider":[
+        {"id":1,"name":"Publish Ride","Link":"/publishride"},
+        {"id":2,"name":"Ride History","Link":"/ridehistory"},
+        {"id":2,"name":"Present Location","Link":"/presentlocation"}
+    ],
+    "User":[
+        {"id":1,"name":"Search Ride","Link":"/searchride"},
+        {"id":2,"name":"Ride History","Link":"/ridehistory"},
+        {"id":2,"name":"Present Location","Link":"/presentlocation"}
+    ]
+}
