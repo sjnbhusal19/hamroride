@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { setLogInDetails } from '@/redux/reducerSlices/userSlice';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import HamroRideLogo from '@/component/logo/page';
 
 const login = () => {
 const router = useRouter();
@@ -49,8 +50,7 @@ if(response.status == '200'){
   
   return (
    <div> 
-   
-    <CustumNavbar/>
+  <HamroRideLogo/>
     <br/><br/><br/>
    <div className='flex justify-center items-center  '>
     <div className='w-[45%]  p-8 bg-gray-100 rounded-3xl shadow-2xl p-20 m-5 space-y-7	'>

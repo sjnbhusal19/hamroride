@@ -1,11 +1,15 @@
 'use client'
 import React, { useState } from 'react'
 import {Image} from "@nextui-org/image";
-import {Button} from "@nextui-org/react";
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {DatePicker} from "@nextui-org/react";
 import Bottom from '@/component/about/page';
-import CustomNavbar from '@/component/navbar/page';
+import HamroRideLogo from '@/component/logo/page';
+import CustumNavbar from '@/component/navbar/page';
+import { FaCircleArrowDown, FaCircleUser } from 'react-icons/fa6';
+import Link from 'next/link';
+
 
 
 
@@ -20,10 +24,36 @@ const Home = () => {
 
 
   return (
-     
-    <div >
-      <CustomNavbar/>
+    <div>
+     <div className=' flex items-center justify-between m-2'>
+     <div >
+     <HamroRideLogo/>
+    </div>
+    <div className='flex'>
+    <div className='flex p-2 space-x-2'> 
+   
+   </div>
 
+      <div className='text-blue-600 m-2 p-1'>
+      <Dropdown>
+      <DropdownTrigger>
+        <Button className='text-blue-600 '>
+         <div className='flex'>
+        <div >  <FaCircleUser /></div>
+         <div> <FaCircleArrowDown/></div>
+          </div>
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu aria-label="Static Actions">
+       <DropdownItem key="login" className='text-blue-600' ><Link href="/login"><div>Login</div></Link></DropdownItem>
+        <DropdownItem key="signup" className='text-blue-600' ><Link href="/register"><div>SignUp</div></Link></DropdownItem>
+        
+      </DropdownMenu>
+    </Dropdown>
+      
+      </div>
+      </div>
+      </div>
     <div >
       <Image 
        width={1600}

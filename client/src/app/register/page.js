@@ -2,11 +2,11 @@
 import React from 'react'
 import Link from 'next/link';
 import {Button, Input,Dropdown, DropdownTrigger, DropdownMenu, DropdownItem,RadioGroup, Radio} from "@nextui-org/react";
-import CustumNavbar from '@/component/navbar/page';
 import { useFormik} from 'formik';
 import * as Yup from "yup";
 import toast from 'react-hot-toast';
 import { LuArrowDownSquare } from "react-icons/lu";
+import HamroRideLogo from '@/component/logo/page';
 
 
 
@@ -72,7 +72,7 @@ const Register = () => {
   }
   return (
     <div>
-        <CustumNavbar/>
+      <HamroRideLogo/>
         <form onSubmit={formik.handleSubmit}>
          <div className='flex justify-center items-center  '>
          <div className='w-[45%]  p-8 bg-gray-100 rounded-3xl shadow-2xl p-20 m-5 space-y-7	'>
