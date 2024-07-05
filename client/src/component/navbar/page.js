@@ -108,7 +108,7 @@ const handleNavigation = (path) => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
-       <DropdownItem key="profile" className='text-blue-600' ><Link href="/profile"><div>Profile</div></Link></DropdownItem>
+       <DropdownItem key="profile" className='text-blue-600' ><Link href="/profile"><div>{userDetails.firstName} {userDetails.lastName}</div></Link></DropdownItem>
         <DropdownItem key="logout" className='text-blue-600' onClick={()=>logout()}>Logout</DropdownItem>
       </DropdownMenu>
     </Dropdown>

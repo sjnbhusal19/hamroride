@@ -4,16 +4,18 @@ import {Button} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {DatePicker} from "@nextui-org/react";
 import Bottom from '@/component/about/page';
-import CustomNavbar from '@/component/navbar/page';
+import { useSelector } from 'react-redux';
 
 
 
 const adminHome = () => {
-
+  const {userDetails} = useSelector (state => state.user)
   return (
      
     <div >
-      <CustomNavbar/>
+      <div className='p-1 mx-8 m-1  text-blue-800'>
+      Hello, {userDetails.firstName} {userDetails.lastName}
+      </div>
 
     <div >
       <Image 

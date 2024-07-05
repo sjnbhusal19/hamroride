@@ -3,13 +3,13 @@ import React from 'react'
 import CustumNavbar from '@/component/navbar/page'
 
 
-const layout = ({clildren}) => {
+const Layout = ({children}) => {
   return (
     <div>
         <CustumNavbar/>
-        {clildren}
+        {children}
         </div>
   )
 }
 
-export default layout
+export default Layout

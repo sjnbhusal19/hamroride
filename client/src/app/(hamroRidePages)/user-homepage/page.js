@@ -1,28 +1,18 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import {Image} from "@nextui-org/image";
-import {Button} from "@nextui-org/react";
-import {Input} from "@nextui-org/react";
-import {DatePicker} from "@nextui-org/react";
 import Bottom from '@/component/about/page';
+import { useSelector } from 'react-redux';
 
 
 
 const userHome = () => {
-
-  let [passenger, setPassenger] = useState(1);
-
-  if(passenger==0)
-    {
-     setPassenger(1)
-    }
-
-
+  const {userDetails} = useSelector (state => state.user)
   return (
-     
-    <div >
-
-
+    <div>
+    <div className='p-1 mx-8 m-1  text-blue-800'>
+      Hello, {userDetails.firstName} {userDetails.lastName}
+      </div>
     <div >
       <Image 
        width={1600}
@@ -31,34 +21,6 @@ const userHome = () => {
       src="/body.png"
     />
       </div>
-
-      <div >
-
-             <div className="flex w-full gap-4">
-    <div className='m-4'>  <Input type="text" label="Leaving From"  isRequired/></div>
-    <div className='m-4'>  <Input type="text" label="Going To"  isRequired/></div>
-    <div className='m-4'> 
-    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-        <DatePicker 
-          label="Date"
-          className="max-w-[284px]"
-          isRequired
-        />
-    </div>
-     </div>
-    <div className='m-4 text-black mt-6'> 
-    Passenger
-    <button className='m-2 bg-blue-400 h-8 w-8' onClick={()=>setPassenger(passenger-1)}>-</button>{passenger}<button className='m-2 bg-blue-400 h-8 w-8' onClick={()=>setPassenger(passenger+1)}>+</button>
-  
-    </div>
-      
-    
-
-     <Button color="primary" className='mt-6 mr-4 h-12'>Search</Button>
-    </div>
-
-      </div>
-
         <div className='flex m-4 items-center justify-center'>
           <div className='m-4'><h4>Your pick of rides at low prices</h4>
            <p className='text-gray-600 text-xs'>No matter where you’re going, by bus or<br/> 
