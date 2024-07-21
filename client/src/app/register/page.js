@@ -20,7 +20,7 @@ const signupSchema = Yup.object().shape({
   email: Yup.string()
       .email('Invalid email format')
       .required('Email is required.'),
-  address: Yup.string()
+  presentAddress: Yup.string()
       .min(2,'Too Short')
       .required('Address is required.'),
   password: Yup.string()
@@ -41,7 +41,7 @@ const Register = () => {
       firstName: '',
       lastName: '',
       email: '',
-      address:'',
+      presentAddress:'',
       password:'',
       phoneNumber:'',
       gender: '',
@@ -49,7 +49,6 @@ const Register = () => {
     },
     validationSchema:signupSchema,
     onSubmit: values => {
-    console.log(values);
     registerUser(values)
     }
   });
@@ -113,14 +112,14 @@ const Register = () => {
                 ) : null}
     </div>
     <div>
-    <Input type="address" variant="bordered" label="Address" 
-     id="address"
-     name="address"
+    <Input type="presentAddress" variant="bordered" label="Present Address" 
+     id="presentAddress"
+     name="presentAddress"
      onChange={formik.handleChange}
-     value={formik.values.address}
+     value={formik.values.presentAddress}
       />
-       {formik.touched.address && formik.errors.address ? (
-                  <div className="text-red-500 text-sm">{formik.errors.address}</div>
+       {formik.touched.presentAddress && formik.errors.presentAddress ? (
+                  <div className="text-red-500 text-sm">{formik.errors.presentAddress}</div>
                 ) : null}
       </div>
       <div>
@@ -170,9 +169,9 @@ const Register = () => {
           </DropdownItem>
         <DropdownItem 
         key="others"
-        onClick={() => formik.setFieldValue('gender', 'Others')}
+        onClick={() => formik.setFieldValue('gender', 'Other')}
         >
-          Others
+          Other
           </DropdownItem>
       </DropdownMenu>
     </Dropdown>

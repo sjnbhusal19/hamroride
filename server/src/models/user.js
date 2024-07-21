@@ -16,7 +16,7 @@ const userSchema = new Schema({
       required: true,
       unique: true
     },
-    address:{
+    presentAddress:{
       type: String,
       required: true
     },
@@ -27,7 +27,7 @@ const userSchema = new Schema({
     },
     gender :{
       type: String,
-      enum:['Male','Female','Others'],
+      enum:['Male','Female','Other'],
     default:'male'
     },
     role:{type:String,

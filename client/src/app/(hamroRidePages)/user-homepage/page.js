@@ -2,16 +2,40 @@
 import React from 'react'
 import {Image} from "@nextui-org/image";
 import Bottom from '@/component/about/page';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
+import axios from 'axios';
+import { setUserKycVerifiedStatus } from '@/redux/reducerSlices/userSlice';
+import { useEffect } from "react";
 
 
 const userHome = () => {
-  const {userDetails} = useSelector (state => state.user)
+  const dispatch= useDispatch();
+  const {userDetails, kycVerifiedStatus} = useSelector (state => state.user)
+  useEffect(()=>{
+    checkKycStatus()
+  },[]);
+
+const checkKycStatus = async ()=>{
+  const {data}= await axios.get(`http://localhost:4000/kyc-status/${userDetails._id}`)
+  dispatch(setUserKycVerifiedStatus(data.kycVerifiedStatus))
+}
+const generateKycDiv = ()=>{
+  if(kycVerifiedStatus=== 'kyc-not-filled'){
+     return <p> ⚠️ User KYC is not submitted. <Link href="/user-kyc">Submit Now</Link> </p>
+  }else if(kycVerifiedStatus === 'pending'){
+    return <p> User KYC is submitted. Please wait for Admin Approval </p>
+  }else if(kycVerifiedStatus === 'rejected'){
+    return <p> Your KYC was rejected. <Link href="/user-kyc">Re-submit Now</Link> </p>
+  }
+}
   return (
     <div>
-    <div className='p-1 mx-8 m-1  text-blue-800'>
+    <div className='p-1 mx-8 m-1  text-blue-800 flex'>
       Hello, {userDetails.firstName} {userDetails.lastName}
+      <div className='bg-blue-300 text-white px-1 mx-4 rounded'>
+        {generateKycDiv()}
+        </div>
       </div>
     <div >
       <Image 
