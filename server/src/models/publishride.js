@@ -11,7 +11,7 @@ const rideSchema = new Schema({
       type: String,
       required: true
     },
-    date:{
+    publishDate:{
       type: Object,
       required: true,
     },
@@ -19,14 +19,14 @@ const rideSchema = new Schema({
       type: Number,
       required: true
     },
-    bookedSheet:{
-        type:Number,
-        required:true
-    },
-    remainingSheet:{
-        type:Number,
-        required:true
-    },
+    // bookedSheet:{
+    //     type:Number,
+    //     required:true
+    // },
+    // remainingSheet:{
+    //     type:Number,
+    //     required:true
+    // },
     price:{
         type:String,
         required:true

@@ -1,111 +1,186 @@
-'use client'
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { CgAdd } from "react-icons/cg";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-import { FaCircleArrowDown } from "react-icons/fa6";
-import { FaCircleUser } from "react-icons/fa6";
-import {Input} from "@nextui-org/react";
-import {DatePicker} from "@nextui-org/react";
-import HamroRideLogo from '../logo/page';
+'use client';
+import React from 'react';
+import { Button, Input, DatePicker } from "@nextui-org/react";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { useFormik } from 'formik';
+import * as Yup from "yup";
+import toast from 'react-hot-toast';
 
 
+const publishRideSchema = Yup.object().shape({
+  leavingFrom: Yup.string()
+    .min(2, 'Too Short')
+    .required('Starting place is required.'),
+  goingTo: Yup.string()
+    .min(2, 'Too Short')
+    .required('Destination is required.'),
+  publishDate: Yup.object()
+    .required('Date is required.'),
+  numberOfPassenger: Yup.number()
+    .required('Number of passengers is required.'),
+  price: Yup.string()
+    .required('Price is required'),
+});
 
-
-
-const SearchRide = () => {
-
-  let [passenger, setPassenger] = useState(1);
-
-  if(passenger==0)
-    {
-     setPassenger(1)
+const PublishRide = () => {
+  const formik = useFormik({
+    initialValues: {
+      leavingFrom: '',
+      goingTo: '',
+      publishDate: null,
+      numberOfPassenger:1,
+      remainingSheets:'default',
+      bookedSheets:'defaults',
+      price: ''
+    },
+    validationSchema: publishRideSchema,
+    onSubmit: values => {
+      publishRide(values);
     }
+  });
 
-  return (
-    <div>
- <div className=' flex items-center justify-between m-4'>
-     <div >
-     <HamroRideLogo/>
-    </div>
-    <div className='flex'>
-    <div className='flex p-2 space-x-4'> 
-    
-    
-      <Link href="/publishride">
-    <div className='text-blue-600 flex'>
-      <div className=' mr-1 mt-1 ml-2 '>
-        <CgAdd className='text-xl' />
-        </div>
-      <div className=''>Publish A Ride
-      </div>
-      </div>
-      </Link>
-      </div>
-     
-     
-      <div>
-      <div className='text-blue-600'>
-      <Dropdown>
-      <DropdownTrigger>
-        <Button className='text-blue-600 '>
-         <div className='flex '>
-        <div>  <FaCircleUser/></div>
-         <div > <FaCircleArrowDown/></div>
-          </div>
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Static Actions">
-        <DropdownItem key="login" className='text-blue-600' ><Link href="/login">Login</Link></DropdownItem>
-      <DropdownItem key="signup" className='text-blue-600' > <Link href="/register">SignUp</Link></DropdownItem>
-        
-      </DropdownMenu>
-    </Dropdown>
-      
-      </div>
-      </div>
-    </div>
-    </div>
-   
-   
-    <br/><br/>
-          
-         
-         
-         <div className='text-blue-600 text-center'>
-          Find a Ride
-         </div>
-         <br/><br/>
-        
-      <div className='flex justify-center  items-center' >
+  const publishRide = async(values)=>{
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values)
+  };
+  const response = await fetch('http://localhost:4000/publishride', requestOptions);
+  const data = await response.json()
 
-<div className="flex w-full gap-4">
-<div className='m-4'>  <Input type="text" label="Leaving From"  isRequired/></div>
-<div className='m-4'>  <Input type="text" label="Going To"  isRequired/></div>
-<div className='m-4'> 
-<div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-<DatePicker 
-label="Date"
-className="max-w-[284px]"
-isRequired
-/>
-</div>
-</div>
-<div className='m-4 text-black mt-6'> 
-Passenger
-<button className='m-2 bg-blue-400 h-8 w-8' onClick={()=>setPassenger(passenger-1)}>-</button>{passenger}<button className='m-2 bg-blue-400 h-8 w-8' onClick={()=>setPassenger(passenger+1)}>+</button>
-
-</div>
-
-
-
-<Button color="primary" className='mt-6 mr-4 h-12'>Search</Button>
-</div>
-
-</div>
-
-    </div>
-  )
+if(response.status == '200'){
+  toast.success(data.msg)
+}else{
+  toast.error(data.msg)
 }
 
-export default SearchRide
+}
+  
+
+  const handlePassengerChange = (count) => {
+    const newCount = formik.values.numberOfPassenger + count;
+    formik.setFieldValue('numberOfPassenger', newCount < 1 ? 1 : newCount);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold text-blue-600 text-center mb-4">Find a Ride</h1>
+        <form onSubmit={formik.handleSubmit} className="flex flex-col">
+          <div className="mb-4">
+            <Input
+              type="text"
+              label="Leaving From"
+              variant="bordered"
+              isRequired
+              id="leavingFrom"
+              name="leavingFrom"
+              onChange={formik.handleChange}
+              value={formik.values.leavingFrom}
+            />
+            {formik.touched.leavingFrom && formik.errors.leavingFrom ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.leavingFrom}</div>
+            ) : null}
+          </div>
+          <div className="mb-4">
+            <Input
+              type="text"
+              label="Going To"
+              variant="bordered"
+              isRequired
+              id="goingTo"
+              name="goingTo"
+              onChange={formik.handleChange}
+              value={formik.values.goingTo}
+            />
+            {formik.touched.goingTo && formik.errors.goingTo ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.goingTo}</div>
+            ) : null}
+          </div>
+          <div className="mb-4">
+            <DatePicker
+              label="Date"
+              minValue={today(getLocalTimeZone())}
+              value={formik.values.publishDate}
+              onChange={(value) => formik.setFieldValue('publishDate', value)}
+              className="max-w-full"
+              isRequired
+            />
+            {formik.touched.publishDate && formik.errors.publishDate ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.publishDate}</div>
+            ) : null}
+          </div>
+          <div className="mb-4">
+            <Input
+              isReadOnly
+              label="Number of Booked Sheets"
+              type="text"
+              variant="bordered"
+              id="bookedSheets"
+              name="bookedSheets"
+              onChange={formik.handleChange}
+              value={formik.values.bookedSheets}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              isReadOnly
+              label="Number of Remaining Seats"
+              type="text"
+              variant="bordered"
+              id="remainingSheets"
+              name="remainingSheets"
+              onChange={formik.handleChange}
+              value={formik.values.remainingSheets}
+            />
+          </div>
+          <div className="mb-4 flex">
+            <label className="block font-medium text-gray-700 mb-2">Passenger</label>
+            <div className="flex items-center px-3 space-x-2">
+              <Button
+                type="button"
+                size='sm'
+                className="bg-blue-400 text-white rounded-xl h-8  w-4"
+                onClick={() => handlePassengerChange(-1)}
+              >
+                -
+              </Button>
+              <span>{formik.values.numberOfPassenger}</span>
+              <Button
+                type="button"
+                size='sm'
+                className="bg-blue-400 text-white rounded-xl   "
+                onClick={() => handlePassengerChange(1)}
+              >
+                +
+              </Button>
+            </div>
+            {formik.touched.numberOfPassenger && formik.errors.numberOfPassenger ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.numberOfPassenger}</div>
+            ) : null}
+          </div>
+          <div className="mb-4">
+            <Input
+              type="text"
+              label="Price"
+              variant="bordered"
+              isRequired
+              id="price"
+              name="price"
+              onChange={formik.handleChange}
+              value={formik.values.price}
+            />
+            {formik.touched.price && formik.errors.price ? (
+              <div className="text-red-500 text-sm mt-1">{formik.errors.price}</div>
+            ) : null}
+          </div>
+          <div className='flex item-center justify-center mt-2 '>
+          <Button type="submit" className="  bg-blue-600 text-white w-14 ">Search</Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default PublishRide;
